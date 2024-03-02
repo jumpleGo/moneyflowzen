@@ -46,6 +46,8 @@ const {products} = storeToRefs(useDetailInfoStore())
   flex-direction: column;
   row-gap: 16px;
   position: relative;
+  align-items: center;
+  justify-content: center;
   height: fit-content;
 
   @include desktop{

@@ -33,11 +33,11 @@ const instance = getCurrentInstance()
 
 const firebase = instance?.appContext.config.globalProperties.$firebase
 const databaseRef = dbRef(getDatabase(firebase));
-const {products} = storeToRefs(useDetailInfoStore())
+const {products, tariffs} = storeToRefs(useDetailInfoStore())
 
 let telegramApp = window.Telegram.WebApp
 
-onMounted(() => {
+onMounted(async () => {
   telegramApp.expand();
   telegramApp.SettingsButton.hide()
   telegramApp.setHeaderColor('#F0BD45')
@@ -48,7 +48,8 @@ onMounted(() => {
     text: 'Оформить'
   });
 
-  getProducts()
+  await getProducts()
+  await getTariffs()
 
 })
 
@@ -63,6 +64,18 @@ const getProducts = () => {
     console.error(error);
   });
 }
+const getTariffs = () => {
+  get(child(databaseRef, `tariffs/`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      tariffs.value = snapshot.val()
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+}
+
 window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
   window.Telegram.WebApp.sendData(JSON.stringify({
     eventData: {

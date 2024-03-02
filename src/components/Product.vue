@@ -146,11 +146,6 @@ const isOpenHint = ref(false)
   text-overflow: ellipsis;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  line-clamp: 5;
-  box-orient: vertical;
   max-height: 100px;
 }
 .product__attention--list {

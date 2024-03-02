@@ -42,6 +42,10 @@ const router = createRouter({
     {
       path: '/introday',
       component: () => import('./../components/DetailInfo.vue')
+    },
+    {
+      path: '/cryptodeep',
+      component: () => import('./../components/DetailInfo.vue')
     }
   ]
 })

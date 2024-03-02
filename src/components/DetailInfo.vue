@@ -3,7 +3,7 @@
     <div class="detail-information-page__light" />
     <div class="detail-information-page__header">
       <h1 v-if="detailData && detailData?.title" class="detail-information-page__title">
-        {{ detailData.title }}
+        <span v-html="detailData.title"></span>
         <img class="detail-information-page__image" :src="detailData.image" />
       </h1>
       <h1 v-else class="detail-information-page__title--sceleton" />
@@ -16,6 +16,15 @@
       <div class="detail-information-page__text" v-html="detailData.description" />
     </div>
     <div v-else class="detail-information-page__content--sceleton" />
+    <div v-if="currentTariffs.length" class="detail-information-page__tariffs">
+      <div v-for="(item, index) in currentTariffs" :key="`item--${index}`" class="detail-information__tariff">
+        <p class="detail-information__tariff__price">{{ formatPrice(item.price) }} ₽</p>
+        <p class="detail-information__tariff__title">({{ item.title }})</p>
+        <img src="@/assets/dollar_big.svg" class="detail-information__tariff__image tariff-dollar-image" />
+        <img src="@/assets/bsll.svg" class="detail-information__tariff__image tariff-ball-image" />
+      </div>
+    </div>
+
     <div class="call-to-action">
       <img class="call-to-action__ball" src="../assets/bsll.svg" />
       <img class="call-to-action__ball-2" src="../assets/bsll.svg" />
@@ -38,17 +47,20 @@ import {useDetailInfoStore} from "@/stores/detail";
 import AppButton from "@/components/Buttons/AppButton.vue";
 import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
+import { formatPrice } from '@/helpers/formatPrice'
 
 const router = useRouter()
 const detailStore = storeToRefs(useDetailInfoStore())
+console.log(detailStore)
 
 const route = useRoute()
 
 const detailData = computed(() => {
   return detailStore.products.value.find(item => item.link === route.path.replace('/', ''))
-
 })
 
+const currentTariffs = computed(() => detailStore.tariffs.value[detailData.value?.link] || [])
+console.log(currentTariffs)
 </script>
 
 <style lang="scss" scoped>
@@ -60,6 +72,20 @@ const detailData = computed(() => {
   top: 50%;
   left: -30%;
   box-shadow: 0px 0px 800px 200px $brand_yellow;
+}
+.detail-information__tariff__image {
+  position: absolute;
+}
+.tariff-dollar-image {
+  width: 80px;
+  right: -30px;
+  top: -20px;
+  transform: rotate(-15deg);
+}
+.tariff-ball-image {
+  width: 20px;
+  left: 10px;
+  bottom: 10px;
 }
 .detail-information-page {
   width: 100%;
@@ -258,11 +284,56 @@ const detailData = computed(() => {
   background: white;
   opacity: 0.5;
   animation: lighting 4s linear infinite;
+}
+.detail-information-page__tariffs {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  margin: 25px 0;
+  padding: 0 20px;
+  flex-wrap: wrap;
 
+  @include tablet {
+    justify-content: space-between;
+    column-gap: 20px;
+  }
+  @include not-mobile {
+    justify-content: space-around;
+    column-gap: 20px;
+  }
+}
+.detail-information__tariff {
+  padding: 15px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: inset 0px 0px 10px -3px $brand_yellow;
+  width: calc(50% - 10px);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+
+  @include not-mobile {
+    min-width: auto;
+    min-width: 230px;
+  }
+
+
+}
+.detail-information__tariff__title {
+  font-size: 14px;
+  max-width: 70%;
+  text-align: center;
+
+}
+.detail-information__tariff__price {
+  font-size: 24px;
+  font-weight: bold;
 }
 .detail-information-page__text {
   padding: 20px;
-  font-size: 14px;
+  font-size: 16px;
   color: white;
   backdrop-filter: blur(20px);
   box-shadow: 0 4px 11px 0 rgba(0, 0, 0, 0.44);

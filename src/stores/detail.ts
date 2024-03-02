@@ -8,10 +8,9 @@ import {ref as dbRef} from "@firebase/database";
 export const useDetailInfoStore = defineStore('detail', () => {
   const products = ref([])
 
-  const setProducts = (products) => {
-    products.value = products
-  }
+  const tariffs = ref([])
 
 
-  return { products, setProducts }
+
+  return { products, tariffs }
 })
