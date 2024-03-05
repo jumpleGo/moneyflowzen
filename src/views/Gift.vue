@@ -11,6 +11,8 @@ import GiftGamePage from "@/components/GiftGamePage.vue";
 import {shallowRef} from "vue";
 
 const showGame = shallowRef<boolean>(false)
+
+
 </script>
 <style lang="scss" scoped>
 .mfz-gift {

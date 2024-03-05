@@ -1,5 +1,5 @@
 <template>
-  <component :is="componentButton" :href="props.to" :to="props.to" :class="[buttonClass, {'--fluid': fluid}]">
+  <component :is="componentButton" :disabled="disabled" :href="props.to" :to="props.to" :class="[buttonClass, {'--fluid': fluid}, {'--disabled': disabled}]">
     {{ props.title }}
   </component>
 </template>
@@ -10,7 +10,8 @@ interface IDefaultYellowButton {
   title: string,
   fluid: boolean,
   type?: 'yellow' | 'black',
-  to?: string
+  to?: string,
+  disabled?: boolean
 }
 const props = withDefaults(defineProps<IDefaultYellowButton>(), {
   title: 'Открыть',
@@ -44,5 +45,12 @@ const buttonClass = computed(() => classByType[props.type])
 
 .--fluid {
   width: 100%
+}
+
+.--disabled {
+  opacity: 0.5;
+  background-color: $brand_yellow;
+  backdrop-filter: grayscale(5px);
+
 }
 </style>

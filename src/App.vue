@@ -20,7 +20,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 import AppFooter from './components/AppFooter.vue'
 import {nextTick, onMounted} from "vue";
 import {useDetailInfoStore} from "@/stores/detail";
@@ -28,14 +28,21 @@ import {getCurrentInstance} from "vue";
 import {ref as dbRef} from "@firebase/database";
 import {child, get, getDatabase} from "firebase/database";
 import {storeToRefs} from "pinia";
+import { Getter } from '@/helpers/getter'
+import { useMainStore } from '@/stores/main'
+import { makeId } from '@/helpers/generator'
+import { Setter } from '@/helpers/setter'
 
 const instance = getCurrentInstance()
 
 const firebase = instance?.appContext.config.globalProperties.$firebase
 const databaseRef = dbRef(getDatabase(firebase));
 const {products, tariffs} = storeToRefs(useDetailInfoStore())
+const {hash} = storeToRefs(useMainStore())
 
 let telegramApp = window.Telegram.WebApp
+
+const route = useRoute()
 
 onMounted(async () => {
   telegramApp.expand();
@@ -48,32 +55,49 @@ onMounted(async () => {
     text: 'Оформить'
   });
 
+  await checkForGetGift()
+
   await getProducts()
   await getTariffs()
 
+  const activeHashes: string[] = await Getter.getFromDB(databaseRef,'activeHash/')
+console.log(activeHashes)
+
 })
 
-const getProducts = () => {
-  get(child(databaseRef, `products/`)).then((snapshot) => {
-    if (snapshot.exists()) {
-      products.value = snapshot.val()
-    } else {
-      console.log("No data available");
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
+const checkForGetGift = async () => {
+  console.log(route)
+  if (route.query.getGift) {
+    await getGiftCreateHash()
+  } else return
+
+  if (route.query?.getGift === hash.value) {
+    await generateGiftChance()
+  }
 }
-const getTariffs = () => {
-  get(child(databaseRef, `tariffs/`)).then((snapshot) => {
-    if (snapshot.exists()) {
-      tariffs.value = snapshot.val()
-    } else {
-      console.log("No data available");
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
+
+const generateGiftChance = async () => {
+  const giftHash = makeId(5)
+  const activeHashes: string[] = await Getter.getFromDB(databaseRef,'activeHash/')
+  try {
+    await Setter.setToDb(databaseRef, `/activeHash/${activeHashes?.length || 0}`, giftHash)
+  }catch (err) {
+    return err
+  }
+
+  window.localStorage.setItem('giftHash', giftHash)
+
+}
+
+const getGiftCreateHash = async () => {
+  hash.value = await Getter.getFromDB(databaseRef, 'giftCreateHash/')
+}
+
+const getProducts = async () => {
+  products.value = await Getter.getFromDB(databaseRef, 'products/')
+}
+const getTariffs = async () => {
+  tariffs.value = await Getter.getFromDB(databaseRef, 'tariffs/')
 }
 
 window.Telegram.WebApp.onEvent('mainButtonClicked', () => {

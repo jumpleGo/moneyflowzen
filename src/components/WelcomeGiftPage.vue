@@ -14,11 +14,21 @@
       <img src="../assets/getIt.png" class="mfz_welcome-gift--getIt-badge badge" />
       <img src="../assets/gift.png" class="mfz_welcome-gift--gift" />
     </div>
-    <app-button title="получить" class="mfz_welcome-gift--button" @click="emit('openGame')" />
+    <app-button :disabled="disabledStart" title="получить" class="mfz_welcome-gift--button" @click="emit('openGame')" />
+    <p v-if="disabledStart" class="mfz_welcome-gift--button_tip">пока у вас нет попыток</p>
   </div>
 </template>
 <script lang="ts" setup>
 import AppButton from "@/components/Buttons/AppButton.vue";
+import { shallowRef } from 'vue'
+const hash = window.localStorage.getItem('giftHash')
+const disabledStart = shallowRef<boolean>(false)
+console.log(hash)
+if (!hash) {
+  disabledStart.value = true
+}
+
+
 
 const emit = defineEmits<{
   (e: 'openGame')
@@ -91,6 +101,8 @@ const emit = defineEmits<{
 .mfz_welcome-gift--button {
   margin-top: 2vh;
   z-index: 2;
+}
+.mfz_welcome-gift--button:not(.--disabled) {
   animation: shake 2s linear infinite;
 }
 
@@ -112,5 +124,9 @@ const emit = defineEmits<{
   transform: rotate(-25deg);
   left: 5%;
   margin-top: 25%
+}
+.mfz_welcome-gift--button_tip {
+  color: white;
+  margin-top: 20px
 }
 </style>

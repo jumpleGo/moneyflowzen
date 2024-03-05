@@ -5,10 +5,8 @@ import {getCurrentInstance} from "vue";
 import {ref as dbRef} from "@firebase/database";
 
 
-export const useDetailInfoStore = defineStore('detail', () => {
-  const products = ref([])
+export const useMainStore = defineStore('main', () => {
+  const hash = ref<string>()
 
-  const tariffs = ref([])
-
-  return { products, tariffs }
+  return { hash }
 })
