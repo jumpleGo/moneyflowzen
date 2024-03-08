@@ -14,21 +14,16 @@
       <img src="../assets/getIt.png" class="mfz_welcome-gift--getIt-badge badge" />
       <img src="../assets/gift.png" class="mfz_welcome-gift--gift" />
     </div>
-    <app-button :disabled="disabledStart" title="получить" class="mfz_welcome-gift--button" @click="emit('openGame')" />
-    <p v-if="disabledStart" class="mfz_welcome-gift--button_tip">пока у вас нет попыток</p>
+    <app-button :disabled="!existsGift" title="получить" class="mfz_welcome-gift--button" @click="emit('openGame')" />
+    <p v-if="!existsGift" class="mfz_welcome-gift--button_tip">пока у вас нет попыток</p>
   </div>
 </template>
 <script lang="ts" setup>
 import AppButton from "@/components/Buttons/AppButton.vue";
-import { shallowRef } from 'vue'
-const hash = window.localStorage.getItem('giftHash')
-const disabledStart = shallowRef<boolean>(false)
-console.log(hash)
-if (!hash) {
-  disabledStart.value = true
-}
-
-
+import { computed, shallowRef } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/stores/main'
+const {existsGift} = storeToRefs(useMainStore())
 
 const emit = defineEmits<{
   (e: 'openGame')

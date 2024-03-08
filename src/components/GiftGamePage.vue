@@ -2,10 +2,15 @@
 <div class="mfz-gift-game">
   <img src="../assets/borderCoins.png" class="mfz_welcome-gift--coins" />
   <div class="mfz-gift-game__content">
-    <img v-for="index in 9" :key="index" src="../assets/gift.png" class="mfz-gift-game__item" />
+    <img v-for="index in 9" :key="index" src="../assets/gift.png" class="mfz-gift-game__item" @click="selectGift(index)" />
   </div>
 </div>
 </template>
+<script lang="ts" setup>
+const selectGift = (index) => {
+
+}
+</script>
 <style lang="scss" scoped>
 .mfz-gift-game {
   position: relative;
