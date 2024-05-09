@@ -10,3 +10,11 @@ import { useGiftStore } from '@/stores/gift'
 
 const {selectedGift} = storeToRefs(useGiftStore())
 </script>
+<style lang="scss" scoped>
+.mfz__gift_result_popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+</style>

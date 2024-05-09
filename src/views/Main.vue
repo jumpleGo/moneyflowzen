@@ -13,11 +13,11 @@
       <img class="mfz-main__euro_image" src="../assets/euro.png">
     </div>
     <p class="mfz-main__description">money flow zen</p>
-    <img class="mfz-main__union bounce" src="../assets/union.svg">
+<!--    <img class="mfz-main__union bounce" src="../assets/union.svg">-->
     <p class="mfz-main__left_text">твое место изобилия</p>
     <p class="mfz-main__right_text">гармонии и силы</p>
   </div>
-  <MfzRoadMap />
+<!--  <MfzRoadMap />-->
 </template>
 <style lang="scss" scoped>
 .mfz-main {
@@ -233,7 +233,7 @@
   @include desktop {
     bottom: 5vh;
     left: 250px;
-    width: 300px
+    width: 100px
   }
 
   @include desktop-lg {

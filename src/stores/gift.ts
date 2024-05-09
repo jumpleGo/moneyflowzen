@@ -5,8 +5,8 @@ import {getCurrentInstance} from "vue";
 import {ref as dbRef} from "@firebase/database";
 
 interface ISelectedGift {
-  title: string,
-  image: string
+  title?: string,
+  image?: string
 }
 export const useGiftStore = defineStore('gift', () => {
   const selectedGift = ref<ISelectedGift>()

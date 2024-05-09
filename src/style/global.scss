@@ -9,3 +9,27 @@
   font-family: 'DUERRA';
   src: url('../assets/fonts/Duera-NormBold-PERSONAL.ttf');
 }
+
+* {
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
+  -webkit-touch-callout: unset;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.one {
+  font-size: 80px;
+  z-index: 0;
+  color: white;
+  animation: flyOut 2s linear;
+  touch-action: manipulation;
+
+  &:hover {
+    cursor: pointer;
+  }
+  @include mobile-xs {
+    font-size: 50px;
+    font-weight: bold;
+  }
+}

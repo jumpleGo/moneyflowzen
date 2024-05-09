@@ -1,6 +1,6 @@
 <template>
   <div class="mfz_wrapper">
-    <AppHeader />
+    <AppHeader :show-test="showTest" />
     <RouterView />
     <AppFooter />
     <AppPopup v-if="showModal" />
@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 import AppFooter from './components/AppFooter.vue'
-import {onMounted} from "vue";
+import { computed, onMounted } from 'vue'
 import {useDetailInfoStore} from "@/stores/detail";
 import {getCurrentInstance} from "vue";
 import {ref as dbRef} from "@firebase/database";
@@ -33,6 +33,8 @@ const {hash, activeHashes, showModal, existsGift, showModalType} = storeToRefs(u
 let telegramApp = window.Telegram.WebApp
 
 const route = useRoute()
+console.log(route)
+const showTest = computed(() => route.path !== '/guide')
 
 onMounted(async () => {
   telegramApp.expand();

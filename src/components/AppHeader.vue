@@ -5,7 +5,7 @@
       <router-link class="mfz_wrapper__header_navbar--link" to="/">
         главная
       </router-link>
-      <router-link class="mfz_wrapper__header_navbar--link deactive" to="/test">
+      <router-link v-if="showTest" class="mfz_wrapper__header_navbar--link deactive" to="/test">
         проверка знаний
       </router-link>
       <router-link class="mfz_wrapper__header_navbar--link" to="/products">
@@ -17,6 +17,11 @@
 </template>
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+withDefaults(defineProps<{
+  showTest: boolean
+}>(), {
+  showTest: true
+})
 </script>
 <style lang="scss" scoped>
 .mfz_wrapper__header {

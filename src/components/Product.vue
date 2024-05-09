@@ -6,7 +6,7 @@
         timeForEnd
       }}</span>
       <span v-if="props.outDate && outDate" class="product__attention product__info">{{ outDate }}</span>
-      <span v-if="props.nextGroup" class="product__attention product__next-group">{{
+      <span v-if="props.nextGroup && nextGroup" class="product__attention product__next-group">{{
         nextGroup
       }}</span>
     </div>
@@ -110,6 +110,7 @@ const nextGroup = computed(() => {
   let endTime
   let timeOut = getNoun(Math.ceil(day), 'день', 'дня', 'дней')
   endTime = day
+  if (endTime <= 0) return false
 
   return `следующий поток через ${Math.ceil(endTime)} ${timeOut}`
 })

@@ -50,6 +50,10 @@ const router = createRouter({
     {
       path: '/cryptodeep',
       component: () => import('./../components/DetailInfo.vue')
+    },
+    {
+      path: '/guide',
+      component: () => import('../views/Guide.vue')
     }
   ]
 })

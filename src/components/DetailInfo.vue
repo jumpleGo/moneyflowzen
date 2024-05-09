@@ -45,13 +45,12 @@
 import {useRoute, useRouter} from "vue-router";
 import {useDetailInfoStore} from "@/stores/detail";
 import AppButton from "@/components/Buttons/AppButton.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed} from "vue";
 import {storeToRefs} from "pinia";
 import { formatPrice } from '@/helpers/formatPrice'
 
 const router = useRouter()
 const detailStore = storeToRefs(useDetailInfoStore())
-console.log(detailStore)
 
 const route = useRoute()
 
@@ -60,9 +59,12 @@ const detailData = computed(() => {
 })
 
 const currentTariffs = computed(() => detailStore.tariffs.value[detailData.value?.link] || [])
-console.log(currentTariffs)
 </script>
-
+<style lang="scss">
+li {
+  line-height: 40px;
+}
+</style>
 <style lang="scss" scoped>
 .detail-information-page__light {
   position: absolute;
@@ -206,22 +208,19 @@ console.log(currentTariffs)
 .detail-information-page__moln-wrapper {
   position: relative;
   width: 100%;
-
-  @include desktop {
-    margin-top: 40px;
+  height: 50px;
+  z-index: 1;
+  margin-top: 100px;
+  @include mobile-all {
+    margin-top: 0;
   }
-
-  @include desktop-md {
-    margin-top: 160px;
-  }
-
   @include desktop-lg {
-    margin-top: 400px;
+    margin-top: 200px;
   }
 }
 .detail-information-page__moln {
   position: absolute;
-  bottom: -150px;
+  bottom: -170px;
   right: -10%;
   width: 100%;
 
@@ -232,42 +231,41 @@ console.log(currentTariffs)
 
 .detail-information-page__coins {
   position: absolute;
-  width: 300px;
+  width: 100px;
+
 
   @include mobile-xs {
-    width: 200px;
-    left: -17vw;
-    bottom: -190px;
+    width: 70px;
+    left: 5%;
+    bottom: -270%;
   }
 
   @include mobile {
-    width: 300px;
-    left: -100px;
-    bottom: -250px;
+    left: 5%;
+    bottom: -350%;
   }
 
   @include tablet {
-    width: 300px;
-    left: -100px;
-    bottom: -250px;
+    left: 8%;
+    bottom: -330%;
   }
 
   @include desktop {
-    width: 300px;
-    left: -50px;
-    bottom: -250px;
+    width: 200px;
+    left: 7%;
+    bottom: -350%;
   }
 
   @include desktop-md {
-    width: 500px;
-    left: -50px;
-    bottom: -300px;
+    width: 200px;
+    left: 7%;
+    bottom: -300%;
   }
 
   @include desktop-lg {
-    width: 500px;
-    left: -50px;
-    bottom: -300px;
+    width: 200px;
+    bottom: -300%;
+    left: 8%;
   }
 }
 .detail-information-page__content {
@@ -300,6 +298,8 @@ console.log(currentTariffs)
   @include not-mobile {
     justify-content: space-around;
     column-gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 }
 .detail-information__tariff {
